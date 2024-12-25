@@ -221,7 +221,10 @@ function InfoPage() {
                             </div>
                         </div>
                     ))}
-                    Henüz bir veri yok. Lütfen bir butona tıklayın.<br />
+                    Henüz bir veri yok.asfsaf Lütfen bir butona tıklayın.<br />
+                    Henüz bir veri yok.asfsaf Lütfen bir butona tıklayın.<br />
+                    Henüz bir veri yok.asfsaf Lütfen bir butona tıklayın.<br />
+                    Henüz bir veri yok.asfsaf Lütfen bir butona tıklayın.<br />
                 </div>
             </div>
         </div>
