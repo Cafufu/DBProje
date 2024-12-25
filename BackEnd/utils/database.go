@@ -52,7 +52,7 @@ func CheckLogin(conn *pgx.Conn, login LoginInput) int {
 	var id int
 
 	rows, err := conn.Query(context.Background(), "SELECT id FROM users WHERE user_name=$1 AND password=$2", login.UserName, login.Password)
-
+	defer rows.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -76,14 +76,14 @@ func Insert(conn *pgx.Conn, customer Customer) {
 func query(conn *pgx.Conn) {
 	rows, err := conn.Query(context.Background(), "SELECT * FROM users WHERE id=10")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var id int32
 		var name string
 		if err := rows.Scan(&id, &name); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 		fmt.Printf("%d | %s\n", id, name)
 	}
