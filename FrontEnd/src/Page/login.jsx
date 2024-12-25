@@ -57,10 +57,9 @@ function Login() {
 
     const registerWithDB = () => {
         const formDataObj = new FormData();
-        formDataObj.append('register', JSON.stringify(customer));
         fetch('http://localhost:3000/register', {
             method: 'POST',
-            body: formDataObj,
+            body: JSON.stringify(customer),
         })
             .then(response => response.json())
             .then(data => {
@@ -75,7 +74,7 @@ function Login() {
             })
             .catch(error => {
                 console.error('Error sending data:', error);
-                setResponseMessage('Error occurred while sending data.');
+                setResponseMessage(customer.password);
             });
     }
 
