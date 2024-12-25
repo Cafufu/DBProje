@@ -8,11 +8,11 @@ import (
 )
 
 type Customer struct {
-	name        string
-	surname     string
-	userName    string
-	phoneNumber string
-	password    string
+	name        string `json:"name"`
+	surname     string `json:"surname"`
+	userName    string `json:"userName"`
+	phoneNumber string `json:"phoneNumber"`
+	password    string `json:"password"`
 }
 type PostData struct {
 	Title  string `json:"title"`
