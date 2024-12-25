@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../css/login.css';
 import Header from '../components/header.jsx'
 import { useNavigate } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 
 function Login() {
     const navigate = useNavigate();
@@ -10,13 +11,11 @@ function Login() {
     const [isCheckedRecommendation, setIsCheckedRecommendation] = useState(false);
     const [responseMessage, setResponseMessage] = useState('');
     const [errors, setErrors] = useState({});
+    const [cookies, setCookie] = useCookies(['customerData']);
 
     const openTab = (tabName) => {
         setActiveTab(tabName);
     }
-    const handleButtonClick = () => {
-        navigate("/InfoPage");
-    };
     const [customer, setCustomer] = useState({});
 
     const handleInputRegister = (e) => {
@@ -63,9 +62,9 @@ function Login() {
             },
             body: JSON.stringify(customer),
         })
-            .then(response => response.json())  // <-- JSON parse
+            .then(response => response.json())
             .then(data => {
-                if (data == 1) {
+                if (data === 1) {
                     setResponseMessage('Kayıt Başarılı. Giriş Ekranına Yönlendiriliyorsunuz...');
                     setTimeout(() => {
                         window.location.reload();
@@ -102,21 +101,22 @@ function Login() {
     }
 
     const loginWithDB = () => {
-        const formDataObj = new FormData();
-        formDataObj.append('login', JSON.stringify(loginInput));
-        fetch('destination service address', {
+        fetch('http://localhost:3000/login', {
             method: 'POST',
-            body: formDataObj,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginInput),
         })
             .then(response => response.json())
             .then(data => {
-                if (data == null) {
+                if (data === -1) {
                     setResponseMessage('Kullanıcı adı veya Hatalı şifre');
                 } else {
                     setCookie('customerData', data, { path: '/' })
                     setResponseMessage("Giriş Başarılı Yönlendiriliyorsunuz...");
                     setTimeout(() => {
-                        navigate("/")
+                        navigate("/InfoPage")
                     }, 2000);
                 }
             })
@@ -170,7 +170,7 @@ function Login() {
                             className="btn-submit"
                             type="submit"
                             disabled={!allFieldsFilled2()}
-                            onClick={handleButtonClick}
+                            onClick={loginWithDB}
                         >
                             GİRİŞ YAP
                         </button>

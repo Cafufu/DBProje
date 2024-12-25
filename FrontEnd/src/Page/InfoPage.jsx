@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie';
 import '../css/info.css'
 import '../css/bill.css'
 function InfoPage() {
 
     const [allStorageData, setAllStorageData] = useState({});
+    const [cookies, setCookie, getCookies] = useCookies(['customerData']);
 
     const getAllLocalStorage = () => {
         let keys = Object.keys(localStorage);
@@ -39,6 +41,7 @@ function InfoPage() {
 
                         <div className="form-group">
                             <label htmlFor="bill-type">Fatura Türü</label>
+                            <p>Çerez Değeri: {cookies.customerData || 'Henüz yok'}</p>
                             <select id="bill-type" name="bill-type">
                                 <option value="electricity">Elektrik</option>
                                 <option value="gas">Doğalgaz</option>
