@@ -47,6 +47,25 @@ func CheckUser(conn *pgx.Conn, userName string) int {
 
 }
 
+func CheckLogin(conn *pgx.Conn, login LoginInput) int {
+
+	var id int
+
+	rows, err := conn.Query(context.Background(), "SELECT id FROM users WHERE user_name=$1 AND password=$2", login.UserName, login.Password)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	if rows.Next() == false {
+		return -1
+	} else {
+		if err := rows.Scan(&id); err != nil {
+			log.Fatal(err)
+		}
+		return id
+	}
+
+}
 func Insert(conn *pgx.Conn, customer Customer) {
 	str := "INSERT INTO users(name,surname,password,user_name,phone_number)   VALUES ($1,$2,$3,$4,$5);"
 	_, err := conn.Exec(context.Background(), str, customer.Name, customer.Surname, customer.Password, customer.UserName, customer.PhoneNumber)

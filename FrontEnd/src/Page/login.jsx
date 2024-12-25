@@ -65,7 +65,11 @@ function Login() {
         })
             .then(response => response.json())
             .then(data => {
+<<<<<<< HEAD
                 if (data === 1) {
+=======
+                if (data == 1) {
+>>>>>>> c151d56a2e91676004e62299f0f66dbdfad2e22f
                     setResponseMessage('Kayıt Başarılı. Giriş Ekranına Yönlendiriliyorsunuz...');
                     setTimeout(() => {
                         window.location.reload();

@@ -7,3 +7,8 @@ type Customer struct {
 	PhoneNumber string `json:"phoneNumber"`
 	Password    string `json:"password"`
 }
+
+type LoginInput struct {
+	UserName string `json:"userNameForLogin"`
+	Password string `json:"password"`
+}
