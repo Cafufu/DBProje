@@ -58,7 +58,7 @@ function Login() {
     const registerWithDB = () => {
         const formDataObj = new FormData();
         formDataObj.append('register', JSON.stringify(customer));
-        fetch('destination service address', {
+        fetch('http://localhost:3000/register', {
             method: 'POST',
             body: formDataObj,
         })
