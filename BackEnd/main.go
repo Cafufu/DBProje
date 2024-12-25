@@ -18,7 +18,7 @@ type Customer struct {
 func main() {
 
 	app := fiber.New()
-
+	dbconn := DbConnect()
 	app.Post("/register", func(c *fiber.Ctx) error {
 		body := c.Body()
 		var customer Customer
@@ -29,7 +29,7 @@ func main() {
 				"error": "Invalid JSON format",
 			})
 		}
-
+		CheckUser(dbconn, customer.UserName)
 		fmt.Print(customer)
 		return c.JSON(customer)
 	})
