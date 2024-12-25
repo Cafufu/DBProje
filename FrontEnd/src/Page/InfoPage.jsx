@@ -31,6 +31,55 @@ function InfoPage() {
         setAllStorageData({});
     };
 
+    const handleInputLogin = (e) => {
+        const { name, value } = e.target;
+        setbillInfo(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+    }
+    const [billInfo, setbillInfo] = useState({
+        billType: '1',
+        billname: '',
+        month: '',
+        year: '',
+        amount: '',
+    });
+    const allFieldsFilled = () => {
+        return (
+            billInfo.billType &&
+            billInfo.billname &&
+            billInfo.month &&
+            billInfo.year &&
+            billInfo.amount
+        );
+    }
+
+    const insertDB = () => {
+        fetch('http://localhost:3000/insert', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(billInfo),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data === -1) {
+                    setResponseMessage('Kullanıcı adı veya Hatalı şifre');
+                } else {
+                    setCookie('customerData', data, { path: '/' })
+                    setResponseMessage("Giriş Başarılı Yönlendiriliyorsunuz...");
+                    setTimeout(() => {
+                        navigate("/InfoPage")
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+                setResponseMessage('Error occurred while sending data.');
+            });
+    }
     return (
         <div>
             <div className="info-page">
@@ -41,53 +90,87 @@ function InfoPage() {
 
                         <div className="form-group">
                             <label htmlFor="bill-type">Fatura Türü</label>
-                            <p>Çerez Değeri: {cookies.customerData || 'Henüz yok'}</p>
-                            <select id="bill-type" name="bill-type">
-                                <option value="electricity">Elektrik</option>
-                                <option value="gas">Doğalgaz</option>
-                                <option value="water">Su</option>
+                            <select
+                                id="bill-type"
+                                name="billType"
+                                value={billInfo.billType}
+                                onChange={handleInputLogin}
+                            >
+                                <option value="1">Elektrik</option>
+                                <option value="2">Doğalgaz</option>
+                                <option value="3">Su</option>
                             </select>
                         </div>
 
 
                         <div className="form-group">
                             <label htmlFor="bill-name">Fatura Adı</label>
-                            <input type="text" id="bill-name" name="bill-name" placeholder="Faturanın adı" />
+                            <input
+                                type="text"
+                                id="billname"
+                                name="billname"
+                                placeholder="Faturanın adı"
+                                value={billInfo.billname}
+                                onChange={handleInputLogin}
+                            />
                         </div>
 
 
                         <div className="form-group row">
                             <div className="column">
                                 <label htmlFor="month">Ay</label>
-                                <select id="month" name="month">
-                                    <option value="january">Ocak</option>
-                                    <option value="february">Şubat</option>
-                                    <option value="march">Mart</option>
-                                    <option value="april">Nisan</option>
-                                    <option value="may">Mayıs</option>
-                                    <option value="june">Haziran</option>
-                                    <option value="july">Temmuz</option>
-                                    <option value="august">Ağustos</option>
-                                    <option value="september">Eylül</option>
-                                    <option value="october">Ekim</option>
-                                    <option value="november">Kasım</option>
-                                    <option value="december">Aralık</option>
-                                </select>
+                                <input
+                                    type="number"
+                                    id="month"
+                                    name="month"
+                                    placeholder="1"
+                                    min="1"
+                                    max="12"
+                                    value={billInfo.month}
+                                    onChange={handleInputLogin}
+                                />
                             </div>
+
                             <div className="column">
                                 <label htmlFor="year">Yıl</label>
-                                <input type="number" id="year" name="year" placeholder="2024" min="2000" max="2100" />
+                                <input
+                                    type="number"
+                                    id="year"
+                                    name="year"
+                                    placeholder="2024"
+                                    step="1"
+                                    min="2000"
+                                    max="2100"
+                                    value={billInfo.year}
+                                    onChange={handleInputLogin}
+                                />
                             </div>
                         </div>
 
 
                         <div className="form-group">
                             <label htmlFor="amount">Fatura Tutarı</label>
-                            <input type="number" id="amount" name="amount" placeholder="0.00" step="0.01" />
+                            <input
+                                type="number"
+                                id="amount"
+                                name="amount"
+                                placeholder="0.00"
+                                step="0.01"
+                                value={billInfo.amount}
+                                onChange={handleInputLogin}
+                            />
                         </div>
 
 
-                        <button type="submit" className="btn-save">Kaydet</button>
+                        <button
+                            className="btn-save"
+                            type="submit"
+                            disabled={!allFieldsFilled()}
+                            onClick={handleInputLogin}
+                        >Kaydet
+                        </button>
+
+
                     </form>
                 </div>
 
