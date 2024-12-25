@@ -121,5 +121,6 @@ func ShowBills(conn *pgx.Conn, bill BillInfo) []Bill {
 		b.TypeName = "random"
 		bills = append(bills, b)
 	}
+
 	return bills
 }

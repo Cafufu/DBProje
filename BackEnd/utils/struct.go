@@ -24,5 +24,5 @@ type Bill struct {
 
 type BillInfo struct {
 	UserId int `json:"userId"`
-	TypeId int `json:"typeId"`
+	TypeId int `json:"billtype"`
 }
