@@ -40,6 +40,19 @@ func main() {
 		return c.JSON(retValue)
 	})
 
+	app.Post("/login", func(c *fiber.Ctx) error {
+		body := c.Body()
+		var login utils.LoginInput
+		err := json.Unmarshal(body, &login)
+		if err != nil {
+			log.Fatal(err)
+		}
+		id := utils.CheckLogin(dbconn, login)
+
+		fmt.Print(id)
+		return c.JSON(id)
+	})
+
 	app.Listen(":3000")
 
 }
