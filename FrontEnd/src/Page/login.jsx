@@ -65,12 +65,7 @@ function Login() {
         })
             .then(response => response.json())  // <-- JSON parse
             .then(data => {
-<<<<<<< HEAD
                 if (data == 1) {
-=======
-                // data örneğin: { result: 1 }
-                if (data === 1) {
->>>>>>> bea47610d2a22081f21eca97b041e99a7dd70265
                     setResponseMessage('Kayıt Başarılı. Giriş Ekranına Yönlendiriliyorsunuz...');
                 } else {
                     setResponseMessage('Kullanıcı Mevcut!');
