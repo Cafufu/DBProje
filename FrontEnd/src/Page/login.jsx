@@ -63,9 +63,8 @@ function Login() {
             },
             body: JSON.stringify(customer),
         })
-            .then(response => response.json())  // <-- JSON parse
+            .then(response => response.json())
             .then(data => {
-                // data örneğin: { result: 1 }
                 if (data === 1) {
                     setResponseMessage('Kayıt Başarılı. Giriş Ekranına Yönlendiriliyorsunuz...');
                     setTimeout(() => {
@@ -103,22 +102,23 @@ function Login() {
     }
 
     const loginWithDB = () => {
-        const formDataObj = new FormData();
-        formDataObj.append('login', JSON.stringify(loginInput));
-        fetch('destination service address', {
+        fetch('http://localhost:3000/login', {
             method: 'POST',
-            body: formDataObj,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(loginInput),
         })
             .then(response => response.json())
             .then(data => {
-                if (data == null) {
+                if (data === -1) {
                     setResponseMessage('Kullanıcı adı veya Hatalı şifre');
                 } else {
                     setCookie('customerData', data, { path: '/' })
                     setResponseMessage("Giriş Başarılı Yönlendiriliyorsunuz...");
-                    setTimeout(() => {
-                        navigate("/")
-                    }, 2000);
+                    /*setTimeout(() => {
+                        navigate("/InfoPage")
+                    }, 2000);*/
                 }
             })
             .catch(error => {
