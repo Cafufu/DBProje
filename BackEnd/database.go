@@ -20,7 +20,7 @@ func DbConnect() *pgx.Conn {
 	if err != nil {
 		panic(err)
 	}
-	defer conn.Close(context.Background())
+
 	return conn
 }
 func CheckUser(conn *pgx.Conn, userName string) int {
@@ -49,14 +49,15 @@ func createTable(conn *pgx.Conn) {
 		panic(err)
 	}
 }
-func insert(conn *pgx.Conn, userInfo User) {
-	name := userInfo.name
-	id := userInfo.id
-	_, err := conn.Exec(context.Background(), "INSERT INTO Users(id,name)   VALUES ($1,$2);", id, name)
-	if err != nil {
-		panic(err)
-	}
-}
+
+//	func insert(conn *pgx.Conn, userInfo User) {
+//		name := userInfo.name
+//		id := userInfo.id
+//		_, err := conn.Exec(context.Background(), "INSERT INTO Users(id,name)   VALUES ($1,$2);", id, name)
+//		if err != nil {
+//			panic(err)
+//		}
+//	}
 func query(conn *pgx.Conn) {
 	rows, err := conn.Query(context.Background(), "SELECT * FROM users WHERE id=10")
 	if err != nil {
