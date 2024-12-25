@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/joho/godotenv"
@@ -88,4 +89,16 @@ func query(conn *pgx.Conn) {
 		}
 		fmt.Printf("%d | %s\n", id, name)
 	}
+}
+
+func InsertBill(conn *pgx.Conn, bill Bill) int {
+	typeId, _ := strconv.Atoi(bill.TypeName)
+
+	str := "INSERT INTO bills(user_id,type_id,bill_name,year,month,amount)   VALUES ($1,$2,$3,$4,$5,$6);"
+	_, err := conn.Exec(context.Background(), str, bill.UserId, typeId, bill.BillName, bill.Year, bill.Month, bill.Amount)
+	if err != nil {
+		log.Fatal(err)
+		return 0
+	}
+	return 1
 }

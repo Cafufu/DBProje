@@ -9,3 +9,6 @@ CREATE TABLE "public"."bills" (
   CONSTRAINT "bills_to_users" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id"),
   CONSTRAINT "bills_to_types" FOREIGN KEY ("type_id") REFERENCES "public"."bill_types" ("id")
 )
+
+ALTER TABLE "public"."bills" ALTER COLUMN "year" TYPE varchar(144)
+ALTER TABLE "public"."bills" ALTER COLUMN "month" TYPE varchar(144)
