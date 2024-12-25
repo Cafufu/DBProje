@@ -3,41 +3,9 @@ import { useCookies } from 'react-cookie';
 import '../css/info.css'
 import '../css/bill.css'
 function InfoPage() {
-
+    const [responseMessage, setResponseMessage] = useState('');
     const [allStorageData, setAllStorageData] = useState({});
     const [cookies, setCookie, getCookies] = useCookies(['customerData']);
-
-    const getAllLocalStorage = () => {
-        let keys = Object.keys(localStorage);
-        let localStorageData = {};
-
-        keys.forEach(key => {
-            localStorageData[key] = JSON.parse(localStorage.getItem(key));
-        });
-        return localStorageData;
-    };
-
-    const removeItemFromLocalStorage = (key) => {
-        localStorage.removeItem(key);
-        setAllStorageData(prevState => {
-            const updatedState = { ...prevState };
-            delete updatedState[key];
-            return updatedState;
-        });
-    };
-
-    const clearLocalStorage = () => {
-        localStorage.clear();
-        setAllStorageData({});
-    };
-
-    const handleInputLogin = (e) => {
-        const { name, value } = e.target;
-        setbillInfo(prevState => ({
-            ...prevState,
-            [name]: value,
-        }));
-    }
     const [billInfo, setbillInfo] = useState({
         userId: cookies.customerData,
         billType: '1',
@@ -46,6 +14,18 @@ function InfoPage() {
         year: '',
         amount: '',
     });
+    const [show, setShow] = useState({
+        userId: cookies.customerData,
+        billType: 0,
+    });
+    const handleInputLogin = (e) => {
+        const { name, value } = e.target;
+        setbillInfo(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+    }
+
     const allFieldsFilled = () => {
         return (
             billInfo.billType &&
@@ -66,14 +46,9 @@ function InfoPage() {
         })
             .then(response => response.json())
             .then(data => {
-                if (data === -1) {
-                    setResponseMessage('Kullanıcı adı veya Hatalı şifre');
-                } else {
-                    setCookie('customerData', data, { path: '/' })
-                    setResponseMessage("Giriş Başarılı Yönlendiriliyorsunuz...");
-                    setTimeout(() => {
-                        navigate("/InfoPage")
-                    }, 2000);
+                if (data === 1) {
+                    setResponseMessage('Kayıt başarılı');
+                    console.log("başarılı");
                 }
             })
             .catch(error => {
@@ -81,12 +56,37 @@ function InfoPage() {
                 setResponseMessage('Error occurred while sending data.')
             });
     }
+
+    const showDB = (typeId) => {
+        show.billType = typeId
+        fetch('http://localhost:3000/show', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(show),
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data === 1) {
+                    console.log(data);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+                setResponseMessage('Error occurred while sending data.')
+            });
+    }
+
+
     return (
         <div>
             <div className="info-page">
-
                 <div className="left-panel">
                     <h2>Yeni Fatura Ekle</h2>
+                    <div style={{ textAlign: "center" }}>
+                        {responseMessage}
+                    </div>
                     <form className="bill-form">
 
                         <div className="form-group">
@@ -148,7 +148,6 @@ function InfoPage() {
                             </div>
                         </div>
 
-
                         <div className="form-group">
                             <label htmlFor="amount">Fatura Tutarı</label>
                             <input
@@ -162,15 +161,13 @@ function InfoPage() {
                             />
                         </div>
 
-
                         <button
                             className="btn-save"
-                            type="submit"
+                            type="button"
                             disabled={!allFieldsFilled()}
-                            onClick={handleInputLogin}
+                            onClick={insertDB}
                         >Kaydet
                         </button>
-
 
                     </form>
                 </div>
@@ -178,9 +175,15 @@ function InfoPage() {
                 <div className="right-panel">
                     <h2>Fatura Görüntüleme ve Analiz</h2>
                     <div className="button-group">
-                        <button className="view-button">Elektrik Faturasını Görüntüle</button>
-                        <button className="view-button">Su Faturasını Görüntüle</button>
-                        <button className="view-button">Doğalgaz Faturasını Görüntüle</button>
+                        <button className="view-button" onClick={() => showDB(1)}>
+                            Elektrik Faturasını Görüntüle
+                        </button>
+                        <button className="view-button" onClick={() => showDB(2)}>
+                            Su Faturasını Görüntüle
+                        </button>
+                        <button className="view-button" onClick={() => showDB(3)}>
+                            Doğalgaz Faturasını Görüntüle
+                        </button>
                         <button className="analyze-button">Karbon Ayak İzini Hesapla</button>
                         <button className="analyze-button">Analiz Yap</button>
                     </div>
