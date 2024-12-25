@@ -12,7 +12,7 @@ type Customer struct {
 	surname     string
 	userName    string
 	phoneNumber string
-	password    string `json:"password"`
+	password    string
 }
 type PostData struct {
 	Title  string `json:"title"`
