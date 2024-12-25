@@ -39,6 +39,7 @@ function InfoPage() {
         }));
     }
     const [billInfo, setbillInfo] = useState({
+        userId: cookies.customerData,
         billType: '1',
         billname: '',
         month: '',
@@ -77,7 +78,7 @@ function InfoPage() {
             })
             .catch(error => {
                 console.error('Error sending data:', error);
-                setResponseMessage('Error occurred while sending data.');
+                setResponseMessage('Error occurred while sending data.')
             });
     }
     return (
