@@ -20,6 +20,10 @@ func DbConnect() *pgx.Conn {
 	if err != nil {
 		panic(err)
 	}
+<<<<<<< HEAD:BackEnd/utils/database.go
+=======
+
+>>>>>>> 49eb91ae624ab532917f79095ae3a35332b79192:BackEnd/database.go
 	return conn
 }
 func CheckUser(conn *pgx.Conn, userName string) int {
