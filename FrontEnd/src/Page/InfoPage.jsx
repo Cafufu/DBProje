@@ -4,7 +4,7 @@ import '../css/info.css'
 import '../css/bill.css'
 function InfoPage() {
     const [responseMessage, setResponseMessage] = useState('');
-    const [allStorageData, setAllStorageData] = useState({});
+    const [allStorageData, setAllStorageData] = useState([]);
     const [cookies, setCookie, getCookies] = useCookies(['customerData']);
     const [billInfo, setbillInfo] = useState({
         userId: cookies.customerData,
@@ -16,7 +16,6 @@ function InfoPage() {
     });
     const [show, setShow] = useState({
         userId: cookies.customerData,
-        billType: 0,
     });
     const handleInputLogin = (e) => {
         const { name, value } = e.target;
@@ -59,6 +58,7 @@ function InfoPage() {
 
     const showDB = (typeId) => {
         show.billType = typeId
+        console.log(show)
         fetch('http://localhost:3000/show', {
             method: 'POST',
             headers: {
@@ -68,9 +68,8 @@ function InfoPage() {
         })
             .then(response => response.json())
             .then(data => {
-                if (data === 1) {
-                    console.log(data);
-                }
+                console.log(data);
+                setAllStorageData(data);
             })
             .catch(error => {
                 console.error('Error sending data:', error);
@@ -193,27 +192,34 @@ function InfoPage() {
                 <h3>Çıktı Ekranı</h3>
                 <div className="output-content">
                     <div className="cart-header">
-                        <h1>Sepetim</h1>
+                        <h1>Faturalar</h1>
                     </div>
-                    {Object.keys(allStorageData).map((key) => (
-                        allStorageData[key].map(item => (
-                            <div className="cart-item">
-                                <div className="cart-item-info">
-                                    <div className="basket-info">
-                                        <img src={item.object.ImageUrl}></img>
-                                        <div className="basket-details">
-                                            <div className="basket-name">{item.object.Brand}{item.object.Model}</div>
-                                            <div className="basket-size">Beden: {item.size}</div>
+                    {allStorageData.map((item, index) => (
+                        <div className="cart-item" key={index}>
+                            <div className="cart-item-info">
+                                <div className="basket-info">
+                                    <div className="basket-details">
+                                        <div className="basket-name">
+                                            Fatura Adı: {item.billName}
+                                        </div>
+                                        <div className="basket-size">
+                                            Yıl: {item.year} - Ay: {item.month}
                                         </div>
                                     </div>
                                 </div>
-                                <div className="cart-item-actions">
-                                    <div className="price">{item.amount}₺</div>
-                                    <button className="delete-btn" onClick={() => removeItemFromLocalStorage(item.Id)}>Sil</button>
-                                </div>
                             </div>
-
-                        ))
+                            <div className="cart-item-actions">
+                                <div className="price">
+                                    {item.amount}₺
+                                </div>
+                                <button
+                                    className="delete-btn"
+                                    onClick={() => removeItem(index)}
+                                >
+                                    Sil
+                                </button>
+                            </div>
+                        </div>
                     ))}
                     Henüz bir veri yok. Lütfen bir butona tıklayın.<br />
                 </div>

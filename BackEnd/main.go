@@ -73,6 +73,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
+		fmt.Println(billInfo)
 		Bills := utils.ShowBills(dbconn, billInfo)
 		fmt.Println(Bills)
 		return c.JSON(Bills)

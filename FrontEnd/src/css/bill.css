@@ -31,13 +31,10 @@
 
 .basket-info {
     display: flex;
+    width: 70vh;
+    height: auto;
 }
 
-.basket-info img {
-    width: 100px;
-    height: auto;
-    margin-right: 20px;
-}
 
 .basket-details {
     display: flex;
@@ -45,14 +42,14 @@
 }
 
 .basket-name {
-    font-size: 16px;
+    font-size: 22px;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
 .basket-size,
 .delivery {
-    font-size: 14px;
+    font-size: 20px;
     color: #888;
 }
 
@@ -81,7 +78,7 @@
 }
 
 .price {
-    font-size: 16px;
+    font-size: 20px;
     color: #e67e22;
     margin-right: 20px;
 }
@@ -93,6 +90,7 @@
     padding: 5px 10px;
     cursor: pointer;
     border-radius: 4px;
+    font-size: 20px;
 }
 
 .cart-summary {

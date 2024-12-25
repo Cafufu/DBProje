@@ -111,12 +111,10 @@ func ShowBills(conn *pgx.Conn, bill BillInfo) []Bill {
 	defer rows.Close()
 	for rows.Next() {
 		var b Bill
-
-		err := rows.Scan(b.BillName, b.Year, b.Month, b.Amount)
+		err := rows.Scan(&b.BillName, &b.Year, &b.Month, &b.Amount)
 		b.UserId = bill.UserId
 		if err != nil {
 			log.Fatal(err)
-
 		}
 		b.TypeName = "random"
 		bills = append(bills, b)
