@@ -3,25 +3,18 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"mymodule/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-type Customer struct {
-	Name        string `json:"name"`
-	Surname     string `json:"surname"`
-	UserName    string `json:"userName"`
-	PhoneNumber string `json:"phoneNumber"`
-	Password    string `json:"password"`
-}
-
 func main() {
 
 	app := fiber.New()
-	dbconn := DbConnect()
+	dbconn := utils.DbConnect()
 	app.Post("/register", func(c *fiber.Ctx) error {
 		body := c.Body()
-		var customer Customer
+		var customer utils.Customer
 		err := json.Unmarshal(body, &customer)
 		if err != nil {
 			// Hata oluşursa HTTP 400 dön
@@ -29,7 +22,7 @@ func main() {
 				"error": "Invalid JSON format",
 			})
 		}
-		CheckUser(dbconn, customer.UserName)
+		utils.CheckUser(dbconn, customer.UserName)
 		fmt.Print(customer)
 		return c.JSON(customer)
 	})

@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"context"
@@ -20,18 +20,21 @@ func DbConnect() *pgx.Conn {
 	if err != nil {
 		panic(err)
 	}
-
 	return conn
 }
 func CheckUser(conn *pgx.Conn, userName string) int {
 
-	rows, err := conn.Query(context.Background(), "SELECT * FROM users WHERE user_name=$1", userName)
-	fmt.Println(rows)
+	rows, err := conn.Query(context.Background(), "SELECT id,name FROM users WHERE user_name=$1", userName)
 	if err != nil {
-
-		panic(err)
+		log.Fatal(err)
 	}
 	defer rows.Close()
+	if rows.Next() == false {
+		return 1
+	} else {
+		return 0
+	}
+
 	// for rows.Next() {
 	// 	var id int32
 	// 	var name string
@@ -41,13 +44,6 @@ func CheckUser(conn *pgx.Conn, userName string) int {
 	// 	fmt.Printf("%d | %s\n", id, name)
 	// }
 
-	return 1
-}
-func createTable(conn *pgx.Conn) {
-	_, err := conn.Exec(context.Background(), "CREATE TABLE IF NOT EXISTS Users(id SERIAL PRIMARY KEY, name TEXT);")
-	if err != nil {
-		panic(err)
-	}
 }
 
 //	func insert(conn *pgx.Conn, userInfo User) {
