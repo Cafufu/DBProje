@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"mymodule/utils"
 
 	"github.com/gofiber/fiber/v2"
@@ -17,10 +18,7 @@ func main() {
 		var customer utils.Customer
 		err := json.Unmarshal(body, &customer)
 		if err != nil {
-			// Hata oluşursa HTTP 400 dön
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error": "Invalid JSON format",
-			})
+			log.Fatal(err)
 		}
 		utils.CheckUser(dbconn, customer.UserName)
 		fmt.Print(customer)
