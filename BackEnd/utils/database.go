@@ -52,7 +52,7 @@ func CheckLogin(conn *pgx.Conn, login LoginInput) int {
 	var id int
 
 	rows, err := conn.Query(context.Background(), "SELECT id FROM users WHERE user_name=$1 AND password=$2", login.UserName, login.Password)
-	defer rows.Close()
+
 	if err != nil {
 		log.Fatal(err)
 	}
