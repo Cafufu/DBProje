@@ -68,6 +68,9 @@ function Login() {
                 // data örneğin: { result: 1 }
                 if (data === 1) {
                     setResponseMessage('Kayıt Başarılı. Giriş Ekranına Yönlendiriliyorsunuz...');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
                 } else {
                     setResponseMessage('Kullanıcı Mevcut!');
                 }
