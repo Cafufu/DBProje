@@ -63,7 +63,7 @@ function Login() {
         })
             .then(response => response.json())
             .then(data => {
-                if (data.Ret == 1) {
+                if (data == 1) {
                     setResponseMessage('Kayıt Başarılı. Giriş Ekranına Yönlendiriliyorsunuz...');
                     setTimeout(() => {
                         window.location.reload();
