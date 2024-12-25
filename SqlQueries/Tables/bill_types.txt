@@ -1,0 +1,4 @@
+CREATE TABLE "public"."bill_types" (
+  "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  "type" varchar(144)
+)
