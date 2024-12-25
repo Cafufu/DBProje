@@ -102,3 +102,24 @@ func InsertBill(conn *pgx.Conn, bill Bill) int {
 	}
 	return 1
 }
+func ShowBills(conn *pgx.Conn, bill BillInfo) []Bill {
+	var bills []Bill
+	rows, err := conn.Query(context.Background(), "SELECT bill_name,year,month,amount FROM bills WHERE user_id=$1 AND type_id=$2", bill.UserId, bill.TypeId)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var b Bill
+
+		err := rows.Scan(b.BillName, b.Year, b.Month, b.Amount)
+		b.UserId = bill.UserId
+		if err != nil {
+			log.Fatal(err)
+
+		}
+		b.TypeName = "random"
+		bills = append(bills, b)
+	}
+	return bills
+}

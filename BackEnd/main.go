@@ -66,6 +66,17 @@ func main() {
 		return c.JSON(retVal)
 	})
 
+	app.Post("/show", func(c *fiber.Ctx) error {
+		body := c.Body()
+		var billInfo utils.BillInfo
+		err := json.Unmarshal(body, &billInfo)
+		if err != nil {
+			log.Fatal(err)
+		}
+		Bills := utils.ShowBills(dbconn, billInfo)
+		fmt.Println(Bills)
+		return c.JSON(Bills)
+	})
 	app.Listen(":3000")
 
 }

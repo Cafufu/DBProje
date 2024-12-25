@@ -21,3 +21,8 @@ type Bill struct {
 	Month    string `json:"month"`
 	Amount   string `json:"amount"`
 }
+
+type BillInfo struct {
+	UserId int `json:"userId"`
+	TypeId int `json:"typeId"`
+}
