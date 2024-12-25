@@ -22,6 +22,7 @@ func DbConnect() *pgx.Conn {
 	}
 	return conn
 }
+
 func CheckUser(conn *pgx.Conn, userName string) int {
 
 	rows, err := conn.Query(context.Background(), "SELECT id,name FROM users WHERE user_name=$1", userName)
@@ -46,14 +47,13 @@ func CheckUser(conn *pgx.Conn, userName string) int {
 
 }
 
-//	func insert(conn *pgx.Conn, userInfo User) {
-//		name := userInfo.name
-//		id := userInfo.id
-//		_, err := conn.Exec(context.Background(), "INSERT INTO Users(id,name)   VALUES ($1,$2);", id, name)
-//		if err != nil {
-//			panic(err)
-//		}
-//	}
+func Insert(conn *pgx.Conn, customer Customer) {
+	str := "INSERT INTO users(name,surname,password,user_name,phone_number)   VALUES ($1,$2,$3,$4,$5);"
+	_, err := conn.Exec(context.Background(), str, customer.Name, customer.Surname, customer.Password, customer.UserName, customer.PhoneNumber)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 func query(conn *pgx.Conn) {
 	rows, err := conn.Query(context.Background(), "SELECT * FROM users WHERE id=10")
 	if err != nil {

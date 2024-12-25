@@ -33,6 +33,9 @@ func main() {
 			log.Fatal(err)
 		}
 		retValue := utils.CheckUser(dbconn, customer.UserName)
+		if retValue == 1 {
+			utils.Insert(dbconn, customer)
+		}
 		fmt.Print(retValue)
 		return c.JSON(retValue)
 	})
