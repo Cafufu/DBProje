@@ -29,22 +29,21 @@ func CheckUser(conn *pgx.Conn, userName string) int {
 		log.Fatal(err)
 	}
 	defer rows.Close()
-	for rows.Next() {
-		var id int32
-		var name string
-		if err := rows.Scan(&id, &name); err != nil {
-			panic(err)
-		}
-		fmt.Printf("%d | %s\n", id, name)
+	if rows.Next() == false {
+		return 1
+	} else {
+		return 0
 	}
 
-	return 1
-}
-func createTable(conn *pgx.Conn) {
-	_, err := conn.Exec(context.Background(), "CREATE TABLE IF NOT EXISTS Users(id SERIAL PRIMARY KEY, name TEXT);")
-	if err != nil {
-		panic(err)
-	}
+	// for rows.Next() {
+	// 	var id int32
+	// 	var name string
+	// 	if err := rows.Scan(&id, &name); err != nil {
+	// 		panic(err)
+	// 	}
+	// 	fmt.Printf("%d | %s\n", id, name)
+	// }
+
 }
 
 //	func insert(conn *pgx.Conn, userInfo User) {
