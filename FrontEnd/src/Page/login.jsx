@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../css/login.css';
 import Header from '../components/header.jsx'
 import { useNavigate } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 
 function Login() {
     const navigate = useNavigate();
@@ -10,13 +11,11 @@ function Login() {
     const [isCheckedRecommendation, setIsCheckedRecommendation] = useState(false);
     const [responseMessage, setResponseMessage] = useState('');
     const [errors, setErrors] = useState({});
+    const [cookies, setCookie] = useCookies(['customerData']);
 
     const openTab = (tabName) => {
         setActiveTab(tabName);
     }
-    const handleButtonClick = () => {
-        navigate("/InfoPage");
-    };
     const [customer, setCustomer] = useState({});
 
     const handleInputRegister = (e) => {
@@ -65,11 +64,7 @@ function Login() {
         })
             .then(response => response.json())
             .then(data => {
-<<<<<<< HEAD
                 if (data === 1) {
-=======
-                if (data == 1) {
->>>>>>> c151d56a2e91676004e62299f0f66dbdfad2e22f
                     setResponseMessage('Kayıt Başarılı. Giriş Ekranına Yönlendiriliyorsunuz...');
                     setTimeout(() => {
                         window.location.reload();
@@ -120,9 +115,9 @@ function Login() {
                 } else {
                     setCookie('customerData', data, { path: '/' })
                     setResponseMessage("Giriş Başarılı Yönlendiriliyorsunuz...");
-                    /*setTimeout(() => {
+                    setTimeout(() => {
                         navigate("/InfoPage")
-                    }, 2000);*/
+                    }, 2000);
                 }
             })
             .catch(error => {
@@ -175,7 +170,7 @@ function Login() {
                             className="btn-submit"
                             type="submit"
                             disabled={!allFieldsFilled2()}
-                            onClick={handleButtonClick}
+                            onClick={loginWithDB}
                         >
                             GİRİŞ YAP
                         </button>

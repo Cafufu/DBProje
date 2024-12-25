@@ -56,6 +56,7 @@ func CheckLogin(conn *pgx.Conn, login LoginInput) int {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer rows.Close()
 	if rows.Next() == false {
 		return -1
 	} else {
