@@ -53,6 +53,19 @@ func main() {
 		return c.JSON(id)
 	})
 
+	app.Post("/insert", func(c *fiber.Ctx) error {
+		body := c.Body()
+		var bill utils.Bill
+		err := json.Unmarshal(body, &bill)
+		if err != nil {
+			log.Fatal(err)
+		}
+		retVal := utils.InsertBill(dbconn, bill)
+
+		fmt.Println(retVal)
+		return c.JSON(retVal)
+	})
+
 	app.Listen(":3000")
 
 }

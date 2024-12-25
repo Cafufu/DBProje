@@ -1,0 +1,6 @@
+CREATE TABLE "public"."carbon_footprint" (
+  "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  "user_id" integer,
+  "value" varchar(144),
+  CONSTRAINT "footprint_to_user" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id")
+)
