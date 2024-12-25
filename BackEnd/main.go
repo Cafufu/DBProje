@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -13,20 +12,31 @@ import (
 func main() {
 
 	app := fiber.New()
+
+	app.Use(func(c *fiber.Ctx) error {
+		c.Set("Access-Control-Allow-Origin", "*")
+		c.Set("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
+		c.Set("Access-Control-Allow-Headers", "Content-Type, Accept, Origin")
+		if c.Method() == fiber.MethodOptions {
+			return c.SendStatus(fiber.StatusOK)
+		}
+		return c.Next()
+	})
+
 	dbconn := utils.DbConnect()
+
 	app.Post("/register", func(c *fiber.Ctx) error {
 		body := c.Body()
 		var customer utils.Customer
 		err := json.Unmarshal(body, &customer)
 		if err != nil {
-
 			log.Fatal(err)
 		}
-		utils.CheckUser(dbconn, customer.UserName)
-		fmt.Print(customer)
-		return c.JSON(customer)
+		retValue := utils.CheckUser(dbconn, customer.UserName)
+		fmt.Print(retValue)
+		return c.JSON(retValue)
 	})
 
 	app.Listen(":3000")
-	defer dbconn.Close(context.Background())
+
 }

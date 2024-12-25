@@ -56,26 +56,27 @@ function Login() {
     }
 
     const registerWithDB = () => {
-        const formDataObj = new FormData();
         fetch('http://localhost:3000/register', {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(customer),
         })
-            .then(response => response.json())
+            .then(response => response.json())  // <-- JSON parse
             .then(data => {
+<<<<<<< HEAD
                 if (data == 1) {
+=======
+                // data örneğin: { result: 1 }
+                if (data === 1) {
+>>>>>>> bea47610d2a22081f21eca97b041e99a7dd70265
                     setResponseMessage('Kayıt Başarılı. Giriş Ekranına Yönlendiriliyorsunuz...');
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
                 } else {
-                    setResponseMessage(data.Text);
+                    setResponseMessage('Kullanıcı Mevcut!');
                 }
             })
-            .catch(error => {
-                console.error('Error sending data:', error);
-                setResponseMessage(customer.password);
-            });
+            .catch(err => console.error(err));
     }
 
     const [loginInput, setloginInput] = useState({
