@@ -8,8 +8,11 @@ import (
 )
 
 type Customer struct {
-	abone_num int
-	price     int
+	name        string
+	surname     string
+	userName    string
+	phoneNumber string
+	password    string
 }
 type PostData struct {
 	Title  string `json:"title"`
@@ -32,6 +35,18 @@ func main() {
 		data.UserID = data.UserID + 10
 		fmt.Println(data)
 		return c.JSON(data)
+	})
+
+	app.Post("/register", func(c *fiber.Ctx) error {
+
+		body := c.Body()
+		var customer Customer
+		err := json.Unmarshal(body, &customer)
+		if err != nil {
+			fmt.Printf("err was %v", err)
+		}
+		fmt.Print(customer)
+		return c.JSON(customer)
 	})
 
 	app.Get("/furkan", func(c *fiber.Ctx) error {
