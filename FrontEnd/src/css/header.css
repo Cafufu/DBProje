@@ -1,0 +1,33 @@
+.ad-container {
+    display: flex;
+    justify-content: center;
+    /* Yatayda ortala */
+    align-items: center;
+    /* Dikeyde ortala */
+    height: 100vh;
+    /* Tam ekran yüksekliği */
+}
+
+.ad-banner {
+    background-color: #008000;
+    /* Canlı sarı renk */
+    color: #ffffff;
+    /* Koyu metin rengi */
+    text-align: center;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ad-banner h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .ad-banner h1 {
+        font-size: 18px;
+        /* Küçük ekranlar için yazı boyutunu azalt */
+    }
+}
