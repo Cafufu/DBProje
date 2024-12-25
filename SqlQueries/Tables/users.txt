@@ -1,0 +1,9 @@
+
+CREATE TABLE "public"."users" (
+  "id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  "name" varchar(144) NOT NULL,
+  "surname" varchar(144) NOT NULL,
+  "password" varchar(144),
+  "user_name" varchar(144),
+  "phone_number" varchar(144)
+)

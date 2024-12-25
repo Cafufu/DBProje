@@ -43,8 +43,12 @@ func main() {
 		var customer Customer
 		err := json.Unmarshal(body, &customer)
 		if err != nil {
-			fmt.Printf("err was %v", err)
+			// Hata oluşursa HTTP 400 dön
+			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+				"error": "Invalid JSON format",
+			})
 		}
+
 		fmt.Print(customer)
 		return c.JSON(customer)
 	})

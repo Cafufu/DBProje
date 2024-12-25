@@ -10,12 +10,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type User struct {
-	name string
-	id   int
-}
-
-func database() {
+func DbConnect() *pgx.Conn {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -26,13 +21,7 @@ func database() {
 		panic(err)
 	}
 	defer conn.Close(context.Background())
-	createTable(conn)
-	// userInfo := User{
-	// 	name: "Furkan",
-	// 	id:   10,
-	// }
-	// insert(conn, userInfo)
-	query(conn)
+	return conn
 }
 func createTable(conn *pgx.Conn) {
 	_, err := conn.Exec(context.Background(), "CREATE TABLE IF NOT EXISTS Users(id SERIAL PRIMARY KEY, name TEXT);")
