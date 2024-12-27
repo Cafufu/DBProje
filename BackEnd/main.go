@@ -78,6 +78,7 @@ func main() {
 		fmt.Println(Bills)
 		return c.JSON(Bills)
 	})
+
 	app.Listen(":3000")
 
 }
