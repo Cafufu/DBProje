@@ -209,11 +209,11 @@ func ShowCarbonFootPrint(conn *pgx.Conn, userId int) string {
 				log.Fatal(err)
 			}
 		} else {
-			return "Kullanıcının henüz eklenmiş faturası bulunmamaktadır."
+			return "-1"
 		}
 
 	} else {
-		return "Kullanıcnın henüz eklenmiş faturası bulunmamaktadır." // kullanıcının henüz bir faturası yok. karbon ayak izi hesaplanmamış.
+		return "-1" // kullanıcının henüz bir faturası yok. karbon ayak izi hesaplanmamış.
 	}
 	return value
 }
