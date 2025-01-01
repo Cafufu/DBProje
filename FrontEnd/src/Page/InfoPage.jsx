@@ -82,6 +82,7 @@ function InfoPage() {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
+                setCarbonFootprint("")
                 if (data !== -1) {
                     setAllStorageData(data);
                 } else {
@@ -106,8 +107,9 @@ function InfoPage() {
             .then(response => response.json())
             .then(data => {
                 console.log(carbonFootprint);
-
-                if (data !== -1) {
+                setAllStorageData([])
+                setTypeName("")
+                if (data !== "-1") {
                     setCarbonFootprint(data);
                 } else {
                     setCarbonFootprint("")
@@ -265,11 +267,11 @@ function InfoPage() {
                             </div>
                         </div>
                     ))}
-                    <hr />
+
                     {carbonFootprint !== "" && (
                         <>
-                            <h3>Karbon Ayak İzi</h3>
-                            <h4>{carbonFootprint} kg CO₂</h4>
+                            <h2 style={{ color: 'red' }}>Karbon Ayak İzi</h2><hr />
+                            <h3>{carbonFootprint} kg CO₂</h3>
                         </>
                     )}
                 </div>
