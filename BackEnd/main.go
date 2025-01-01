@@ -119,6 +119,19 @@ func main() {
 		fmt.Println(retVal)
 		return c.JSON(retVal)
 	})
+	app.Post("/analiz", func(c *fiber.Ctx) error {
+		body := c.Body()
+		var userId int
+		err := json.Unmarshal(body, &userId) // int olarak alıyorum burada ama furkan string gonderirse convert yapcaz.
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(userId)
+
+		analizString := utils.Analiz(dbconn, userId) // string olarak gönderiyorum duruma göre değişebiliriz.
+		fmt.Println(analizString)
+		return c.JSON(analizString)
+	})
 
 	app.Listen(":3000")
 

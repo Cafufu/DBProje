@@ -14,12 +14,12 @@ type LoginInput struct {
 }
 
 type Bill struct {
-	UserId   int    `json:"userId"`
-	TypeName string `json:"billType"`
-	BillName string `json:"billName"`
-	Year     string `json:"year"`
-	Month    string `json:"month"`
-	Amount   string `json:"amount"`
+	UserId   int     `json:"userId"`
+	TypeName string  `json:"billType"`
+	BillName string  `json:"billName"`
+	Year     string  `json:"year"`
+	Month    string  `json:"month"`
+	Amount   float32 `json:"amount"`
 }
 
 type BillInfo struct {

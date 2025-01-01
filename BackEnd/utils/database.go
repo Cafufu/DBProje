@@ -78,21 +78,7 @@ func Insert(conn *pgx.Conn, customer Customer) {
 		log.Fatal(err)
 	}
 }
-func query(conn *pgx.Conn) {
-	rows, err := conn.Query(context.Background(), "SELECT * FROM users WHERE id=10")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var id int32
-		var name string
-		if err := rows.Scan(&id, &name); err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf("%d | %s\n", id, name)
-	}
-}
+
 func CheckBill(conn *pgx.Conn, myBill Bill) bool {
 	var exist bool
 	query := "SELECT EXISTS ( SELECT 1 FROM bills WHERE user_id = $1 AND type_id = $2 AND bill_name = $3 AND year = $4 AND month = $5);"
@@ -287,5 +273,9 @@ func DeleteBill(conn *pgx.Conn, myBill Bill) int {
 	} else {
 		return 0
 	}
+
+}
+
+func Analiz(conn *pgx.Conn, userId int) string {
 
 }
