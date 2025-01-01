@@ -1,0 +1,2 @@
+CREATE VIEW user_bill_avg_details AS 
+SELECT user_id, avg(amount) AS average_amount FROM bills GROUP BY user_id;
