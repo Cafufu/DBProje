@@ -292,6 +292,7 @@ func Analiz(conn *pgx.Conn, userId int) string {
 			retString += "Doğalgaz harcamanız ortalama harcamanızın üstünde!<br/>"
 			gas = 1
 		}
+<<<<<<< HEAD
 		if electric == 0 {
 			retString += "Elektrik harcamanız ortalama harcamanızın altında!<br/>"
 		}
@@ -302,6 +303,17 @@ func Analiz(conn *pgx.Conn, userId int) string {
 			retString += "Doğalgaz harcamanız ortalama harcamanızın altında!<br/>"
 		}
 
+=======
+	}
+	if electric == 0 {
+		retString += "Elektrik harcamanız ortalama harcamanızın altında!<br/>"
+	}
+	if water == 0 {
+		retString += "Su harcamanız ortalama harcamanızın altında!<br/>"
+	}
+	if gas == 0 {
+		retString += "Doğalgaz harcamanız ortalama harcamanızın altında!<br/>"
+>>>>>>> 1a2abd24e34cde439c963127969665649e41c842
 	}
 
 	return retString
