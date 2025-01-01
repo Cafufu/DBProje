@@ -93,6 +93,28 @@ func query(conn *pgx.Conn) {
 		fmt.Printf("%d | %s\n", id, name)
 	}
 }
+func CheckBill(conn *pgx.Conn, myBill Bill) bool {
+	var exist bool
+	query := "SELECT EXISTS ( SELECT 1 FROM bills WHERE user_id = $1 AND type_id = $2 AND bill_name = $3 AND year = $4 AND month = $5);"
+
+	err := conn.QueryRow(context.Background(), query, myBill.UserId, myBill.TypeName, myBill.BillName, myBill.Year, myBill.Month).Scan(&exist)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return exist
+}
+func UpdateBill(conn *pgx.Conn, myBill Bill) int {
+	query := "UPDATE bills SET amount = $1 WHERE user_id = $1 AND type_id = $2 AND bill_name = $3 AND year = $4 AND month = $5;"
+	_, err := conn.Exec(context.Background(), query, myBill.UserId, myBill.TypeName, myBill.BillName, myBill.Year, myBill.Month)
+	if err != nil {
+		log.Fatal(err)
+		return 0
+	}
+	return 1
+
+}
 func CheckCarbonFootprint(conn *pgx.Conn, userId int) bool {
 	var exist bool
 	query := "Select carbon_exist($1)"
