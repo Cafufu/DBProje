@@ -1,0 +1,15 @@
+//this function is created to check if any tuple exist with the given user_id in the carbon_footprint table
+CREATE OR REPLACE FUNCTION carbon_exist(myid users.id%type)
+RETURNS BOOLEAN AS $$
+ DECLARE
+     sonuc BOOLEAN;
+ BEGIN
+     SELECT EXISTS (
+        SELECT 1 
+         FROM carbon_footprint
+         WHERE id = user_id
+     ) INTO sonuc;
+     
+     RETURN sonuc;
+ END;
+ $$ LANGUAGE plpgsql;
