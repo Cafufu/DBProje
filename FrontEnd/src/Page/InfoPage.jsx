@@ -270,7 +270,7 @@ function InfoPage() {
 
                     {carbonFootprint !== "" && (
                         <>
-                            <h2 style={{ color: 'red' }}>Karbon Ayak İzi</h2><hr />
+                            <h2 style={{ color: 'red' }}>Karbon Ayak İzi</h2>
                             <h3>{carbonFootprint} kg CO₂</h3>
                         </>
                     )}
