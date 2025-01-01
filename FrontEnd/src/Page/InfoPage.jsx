@@ -121,6 +121,31 @@ function InfoPage() {
             });
     }
 
+    const removeBill = (index) => {
+        console.log(allStorageData[index])
+        fetch('http://localhost:3000/remove', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(allStorageData[index]),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(carbonFootprint);
+
+                if (data !== "-1") {
+
+                } else {
+
+                }
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+                setResponseMessage('Error occurred while sending data.')
+            });
+    }
+
     return (
         <div>
             <Header />
@@ -260,7 +285,7 @@ function InfoPage() {
                                 </div>
                                 <button
                                     className="delete-btn"
-                                    onClick={() => removeItem(index)}
+                                    onClick={() => removeBill(index)}
                                 >
                                     Sil
                                 </button>

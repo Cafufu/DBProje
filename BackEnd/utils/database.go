@@ -102,7 +102,6 @@ func CheckBill(conn *pgx.Conn, myBill Bill) bool {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(exist)
 	return exist
 }
 func UpdateBill(conn *pgx.Conn, myBill Bill) int {
