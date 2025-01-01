@@ -102,12 +102,12 @@ func CheckBill(conn *pgx.Conn, myBill Bill) bool {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	fmt.Println(exist)
 	return exist
 }
 func UpdateBill(conn *pgx.Conn, myBill Bill) int {
-	query := "UPDATE bills SET amount = $1 WHERE user_id = $1 AND type_id = $2 AND bill_name = $3 AND year = $4 AND month = $5;"
-	_, err := conn.Exec(context.Background(), query, myBill.UserId, myBill.TypeName, myBill.BillName, myBill.Year, myBill.Month)
+	query := "UPDATE bills SET amount = $1 WHERE user_id = $2 AND type_id = $3 AND bill_name = $4 AND year = $5AND month = $6;"
+	_, err := conn.Exec(context.Background(), query, myBill.Amount, myBill.UserId, myBill.TypeName, myBill.BillName, myBill.Year, myBill.Month)
 	if err != nil {
 		log.Fatal(err)
 		return 0
