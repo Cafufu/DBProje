@@ -332,7 +332,9 @@ function InfoPage() {
                     {Analyze !== "" && (
                         <>
                             <h2 style={{ color: 'red' }}>Analiz</h2>
-                            <p>{Analyze}</p>
+                            <p
+                                dangerouslySetInnerHTML={{ __html: Analyze }}
+                            ></p>
                         </>
                     )}
                 </div>
