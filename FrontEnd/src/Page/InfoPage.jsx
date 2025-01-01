@@ -121,23 +121,23 @@ function InfoPage() {
             });
     }
 
-    const removeBill = () => {
+    const removeBill = (index) => {
+        console.log(allStorageData[index])
         fetch('http://localhost:3000/remove', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(cookies.customerData),
+            body: JSON.stringify(allStorageData[index]),
         })
             .then(response => response.json())
             .then(data => {
                 console.log(carbonFootprint);
-                setAllStorageData([])
-                setTypeName("")
+
                 if (data !== "-1") {
-                    setCarbonFootprint(data);
+
                 } else {
-                    setCarbonFootprint("")
+
                 }
             })
             .catch(error => {
