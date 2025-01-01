@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION update_user_avg()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Her kullanıcı için ortalama fatura miktarını hesapla
+    UPDATE users
+    SET avg_amount = (
+        SELECT AVG(amount)
+        FROM bills
+        WHERE user_id = users.user_id
+    );
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;

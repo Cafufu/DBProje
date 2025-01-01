@@ -6,4 +6,5 @@ CREATE TABLE "public"."users" (
   "password" varchar(144),
   "user_name" varchar(144),
   "phone_number" varchar(144)
-)
+);
+ALTER TABLE "public"."users" ADD COLUMN "avg_amount" real;
