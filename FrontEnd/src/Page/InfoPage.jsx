@@ -8,7 +8,8 @@ function InfoPage() {
     const [allStorageData, setAllStorageData] = useState([]);
     const [typeName, setTypeName] = useState("");
     const [carbonFootprint, setCarbonFootprint] = useState("");
-    const [cookies, setCookie, getCookies] = useCookies(['customerData']);
+    const [Analyze, setAnalyze] = useState("");
+    const [cookies] = useCookies(['customerData']);
     const [billInfo, setbillInfo] = useState({
         userId: cookies.customerData,
         billType: '1',
@@ -37,10 +38,12 @@ function InfoPage() {
             }));
         }
     };
+
     const deleteItem = (indexToDelete) => {
         const updatedData = allStorageData.filter((item, index) => index !== indexToDelete);
         setAllStorageData(updatedData);
     };
+
     const allFieldsFilled = () => {
         return (
             billInfo.billType &&
@@ -63,7 +66,6 @@ function InfoPage() {
     }
 
     const insertDB = () => {
-        console.log(billInfo)
         fetch('http://localhost:3000/insert', {
             method: 'POST',
             headers: {
@@ -75,7 +77,6 @@ function InfoPage() {
             .then(data => {
                 if (data === 1) {
                     setResponseMessage('Kayıt başarılı');
-                    console.log("başarılı");
                 }
             })
             .catch(error => {
@@ -96,8 +97,8 @@ function InfoPage() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 setCarbonFootprint("")
+                setAnalyze("")
                 if (data !== -1) {
                     setAllStorageData(data);
                 } else {
@@ -121,13 +122,38 @@ function InfoPage() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(carbonFootprint);
                 setAllStorageData([])
                 setTypeName("")
+                setAnalyze("")
                 if (data !== "-1") {
                     setCarbonFootprint(data);
                 } else {
                     setCarbonFootprint("")
+                }
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+                setResponseMessage('Error occurred while sending data.')
+            });
+    }
+
+    const analiz = () => {
+        fetch('http://localhost:3000/analiz', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(cookies.customerData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                setAllStorageData([])
+                setTypeName("")
+                setCarbonFootprint("")
+                if (data !== "-1") {
+                    setAnalyze(data);
+                } else {
+                    setAnalyze("")
                 }
             })
             .catch(error => {
@@ -147,11 +173,8 @@ function InfoPage() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 if (data === 1) {
                     deleteItem(index)
-                } else {
-                    console.log("Silinemedi")
                 }
             })
             .catch(error => {
@@ -170,7 +193,6 @@ function InfoPage() {
                         {responseMessage}
                     </div>
                     <form className="bill-form">
-
                         <div className="form-group">
                             <label htmlFor="bill-type">Fatura Türü</label>
                             <select
@@ -184,8 +206,6 @@ function InfoPage() {
                                 <option value="3">Doğalgaz</option>
                             </select>
                         </div>
-
-
                         <div className="form-group">
                             <label htmlFor="bill-name">Fatura Adı</label>
                             <input
@@ -197,8 +217,6 @@ function InfoPage() {
                                 onChange={handleInputLogin}
                             />
                         </div>
-
-
                         <div className="form-group row">
                             <div className="column">
                                 <label htmlFor="month">Ay</label>
@@ -213,7 +231,6 @@ function InfoPage() {
                                     onChange={handleInputLogin}
                                 />
                             </div>
-
                             <div className="column">
                                 <label htmlFor="year">Yıl</label>
                                 <input
@@ -229,7 +246,6 @@ function InfoPage() {
                                 />
                             </div>
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="amount">Fatura Tutarı</label>
                             <input
@@ -242,7 +258,6 @@ function InfoPage() {
                                 onChange={handleInputLogin}
                             />
                         </div>
-
                         <button
                             className="btn-save"
                             type="button"
@@ -250,7 +265,6 @@ function InfoPage() {
                             onClick={insertDB}
                         >Kaydet
                         </button>
-
                     </form>
                 </div>
 
@@ -269,7 +283,9 @@ function InfoPage() {
                         <button className="analyze-button" onClick={() => carbon()}>
                             Karbon Ayak İzini Hesapla
                         </button>
-                        <button className="analyze-button">Analiz Yap</button>
+                        <button className="analyze-button" onClick={() => analiz()}>
+                            Analiz Yap
+                        </button>
                     </div>
                 </div>
             </div>
@@ -311,6 +327,12 @@ function InfoPage() {
                         <>
                             <h2 style={{ color: 'red' }}>Karbon Ayak İzi</h2>
                             <h3>{carbonFootprint} kg CO₂</h3>
+                        </>
+                    )}
+                    {Analyze !== "" && (
+                        <>
+                            <h2 style={{ color: 'red' }}>Analiz</h2>
+                            <p>{Analyze}</p>
                         </>
                     )}
                 </div>
