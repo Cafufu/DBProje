@@ -103,6 +103,20 @@ func main() {
 		fmt.Println(carbonFootprint)
 		return c.JSON(carbonFootprint)
 	})
+	app.Post("/remove", func(c *fiber.Ctx) error {
+		body := c.Body()
+		var bill utils.Bill
+		err := json.Unmarshal(body, &bill) // int olarak alıyorum burada ama furkan string gonderirse convert yapcaz.
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(bill)
+		//buraya
+		retVal := utils.DeleteBill(dbconn, bill)
+
+		fmt.Println(retVal)
+		return c.JSON(retVal)
+	})
 
 	app.Listen(":3000")
 

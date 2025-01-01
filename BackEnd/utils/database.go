@@ -270,3 +270,22 @@ func ShowBills(conn *pgx.Conn, bill BillInfo) []Bill {
 
 	return bills
 }
+
+func DeleteBill(conn *pgx.Conn, myBill Bill) int {
+
+	query := "DELETE FROM bills WHERE user_id = $1 AND type_id = $2 AND bill_name = $3 AND year = $4 AND month = $5;"
+
+	// Sorguyu çalıştır
+	result, err := conn.Exec(context.Background(), query, myBill.UserId, myBill.TypeName, myBill.BillName, myBill.Year, myBill.Month)
+
+	if err != nil {
+		log.Fatal(err)
+		return 0
+	}
+	if result.RowsAffected() != 0 {
+		return 1
+	} else {
+		return 0
+	}
+
+}
