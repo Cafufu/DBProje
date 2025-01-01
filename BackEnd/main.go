@@ -114,7 +114,7 @@ func main() {
 
 		retVal := utils.DeleteBill(dbconn, bill)
 		if retVal == 1 {
-			utils.UpdateCarbonFootPrint(dbconn, bill.UserId) // her fatura update edildiğinde karbon ayakizi update ediliyor
+			utils.UpdateCarbonFootPrint(dbconn, bill.UserId) // her fatura delete edildiğinde karbon ayakizi update ediliyor
 		}
 		fmt.Println(retVal)
 		return c.JSON(retVal)
