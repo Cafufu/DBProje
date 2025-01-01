@@ -1,0 +1,5 @@
+CREATE VIEW analiz AS 
+SELECT type_id,avg(amount),user_id
+FROM bills
+GROUP BY type_id, user_id
+having avg(amount) > (select avg_amount from users where id = user_id)

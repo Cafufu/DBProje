@@ -1,0 +1,2 @@
+CREATE VIEW avg_amount_view AS 
+SELECT avg(amount) AS average_amount FROM users
