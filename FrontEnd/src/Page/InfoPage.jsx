@@ -27,6 +27,10 @@ function InfoPage() {
             [name]: value,
         }));
     }
+    const deleteItem = (indexToDelete) => {
+        const updatedData = allStorageData.filter((item, index) => index !== indexToDelete);
+        setAllStorageData(updatedData);
+    };
     const allFieldsFilled = () => {
         return (
             billInfo.billType &&
