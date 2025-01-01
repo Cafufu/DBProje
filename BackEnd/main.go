@@ -62,10 +62,14 @@ func main() {
 			log.Fatal(err)
 		}
 		exist := utils.CheckBill(dbconn, bill)
+
 		if exist {
 			retVal = utils.UpdateBill(dbconn, bill)
+
 		} else {
+
 			retVal = utils.InsertBill(dbconn, bill)
+
 		}
 
 		if retVal == 1 {
