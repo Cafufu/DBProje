@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useCookies } from 'react-cookie';
+import Header from '../components/header.jsx'
 import '../css/info.css'
 import '../css/bill.css'
 function InfoPage() {
@@ -80,6 +81,7 @@ function InfoPage() {
 
     return (
         <div>
+            <Header />
             <div className="info-page">
                 <div className="left-panel">
                     <h2>Yeni Fatura Ekle</h2>
