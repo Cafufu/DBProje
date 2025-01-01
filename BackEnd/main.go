@@ -56,11 +56,18 @@ func main() {
 	app.Post("/insert", func(c *fiber.Ctx) error {
 		body := c.Body()
 		var bill utils.Bill
+		var retVal int
 		err := json.Unmarshal(body, &bill)
 		if err != nil {
 			log.Fatal(err)
 		}
-		retVal := utils.InsertBill(dbconn, bill)
+		exist := utils.CheckBill(dbconn, bill)
+		if exist {
+			retVal = utils.UpdateBill(dbconn, bill)
+		} else {
+			retVal = utils.InsertBill(dbconn, bill)
+		}
+
 		if retVal == 1 {
 			utils.UpdateCarbonFootPrint(dbconn, bill.UserId) // her fatura insert edildiğinde karbon ayakizi update ediliyor
 		}
