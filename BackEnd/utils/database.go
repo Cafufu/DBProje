@@ -218,7 +218,6 @@ func ShowCarbonFootPrint(conn *pgx.Conn, userId int) string {
 
 func InsertBill(conn *pgx.Conn, bill Bill) int {
 	typeId, _ := strconv.Atoi(bill.TypeName)
-	fmt.Println(bill)
 	str := "INSERT INTO bills(user_id,type_id,bill_name,year,month,amount)   VALUES ($1,$2,$3,$4,$5,$6);"
 	_, err := conn.Exec(context.Background(), str, bill.UserId, typeId, bill.BillName, bill.Year, bill.Month, bill.Amount)
 	if err != nil {

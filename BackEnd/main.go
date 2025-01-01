@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"mymodule/utils"
 
@@ -36,7 +35,6 @@ func main() {
 		if retValue == 1 {
 			utils.Insert(dbconn, customer)
 		}
-		fmt.Print(retValue)
 		return c.JSON(retValue)
 	})
 
@@ -49,7 +47,6 @@ func main() {
 		}
 		id := utils.CheckLogin(dbconn, login)
 
-		fmt.Print(id)
 		return c.JSON(id)
 	})
 
@@ -75,7 +72,6 @@ func main() {
 		if retVal == 1 {
 			utils.UpdateCarbonFootPrint(dbconn, bill.UserId) // her fatura insert edildiğinde karbon ayakizi update ediliyor
 		}
-		fmt.Println(retVal)
 		return c.JSON(retVal)
 	})
 
@@ -86,12 +82,10 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(billInfo)
 		Bills := utils.ShowBills(dbconn, billInfo)
 		if len(Bills) == 0 {
 			return c.JSON(-1)
 		}
-		fmt.Println(Bills)
 		return c.JSON(Bills)
 	})
 	app.Post("/carbon", func(c *fiber.Ctx) error {
@@ -101,10 +95,8 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(userId)
 
 		carbonFootprint := utils.ShowCarbonFootPrint(dbconn, userId) // string olarak gönderiyorum duruma göre değişebiliriz.
-		fmt.Println(carbonFootprint)
 		return c.JSON(carbonFootprint)
 	})
 	app.Post("/remove", func(c *fiber.Ctx) error {
@@ -114,13 +106,11 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(bill)
 
 		retVal := utils.DeleteBill(dbconn, bill)
 		if retVal == 1 {
 			utils.UpdateCarbonFootPrint(dbconn, bill.UserId) // her fatura delete edildiğinde karbon ayakizi update ediliyor
 		}
-		fmt.Println(retVal)
 		return c.JSON(retVal)
 	})
 	app.Post("/analiz", func(c *fiber.Ctx) error {
@@ -130,9 +120,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(userId)
 		analizString := utils.Analiz(dbconn, userId) // string olarak gönderiyorum duruma göre değişebiliriz.
-		fmt.Println(analizString)
 		return c.JSON(analizString)
 	})
 

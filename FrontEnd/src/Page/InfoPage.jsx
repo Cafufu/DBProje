@@ -163,7 +163,6 @@ function InfoPage() {
     }
 
     const removeBill = (index) => {
-        console.log(allStorageData[index])
         fetch('http://localhost:3000/remove', {
             method: 'POST',
             headers: {
