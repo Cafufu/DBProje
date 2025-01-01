@@ -264,7 +264,7 @@ func ShowBills(conn *pgx.Conn, bill BillInfo) []Bill {
 		if err != nil {
 			log.Fatal(err)
 		}
-		b.TypeName = bill.TypeId
+		b.TypeName = strconv.Itoa(bill.TypeId)
 		bills = append(bills, b)
 	}
 
