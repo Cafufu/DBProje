@@ -6,6 +6,8 @@ import '../css/bill.css'
 function InfoPage() {
     const [responseMessage, setResponseMessage] = useState('');
     const [allStorageData, setAllStorageData] = useState([]);
+    const [typeName, setTypeName] = useState("");
+    const [carbonFootprint, setCarbonFootprint] = useState("");
     const [cookies, setCookie, getCookies] = useCookies(['customerData']);
     const [billInfo, setbillInfo] = useState({
         userId: cookies.customerData,
@@ -25,7 +27,6 @@ function InfoPage() {
             [name]: value,
         }));
     }
-
     const allFieldsFilled = () => {
         return (
             billInfo.billType &&
@@ -34,6 +35,17 @@ function InfoPage() {
             billInfo.year &&
             billInfo.amount
         );
+    }
+    const updateTypeName = (typeId) => {
+        if (typeId === 1) {
+            setTypeName("Elektrik Faturaları:");
+        }
+        else if (typeId === 2) {
+            setTypeName("Su Faturaları:");
+        }
+        else if (typeId === 3) {
+            setTypeName("Doğalgaz Faturaları:");
+        }
     }
 
     const insertDB = () => {
@@ -59,7 +71,7 @@ function InfoPage() {
 
     const showDB = (typeId) => {
         show.billType = typeId
-        console.log(show)
+        updateTypeName(typeId)
         fetch('http://localhost:3000/show', {
             method: 'POST',
             headers: {
@@ -70,7 +82,12 @@ function InfoPage() {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                setAllStorageData(data);
+                if (data !== -1) {
+                    setAllStorageData(data);
+                } else {
+                    setAllStorageData([])
+                }
+
             })
             .catch(error => {
                 console.error('Error sending data:', error);
@@ -78,6 +95,29 @@ function InfoPage() {
             });
     }
 
+    const carbon = () => {
+        fetch('http://localhost:3000/carbon', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(cookies.customerData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(carbonFootprint);
+
+                if (data !== -1) {
+                    setCarbonFootprint(data);
+                } else {
+                    setCarbonFootprint("")
+                }
+            })
+            .catch(error => {
+                console.error('Error sending data:', error);
+                setResponseMessage('Error occurred while sending data.')
+            });
+    }
 
     return (
         <div>
@@ -185,7 +225,9 @@ function InfoPage() {
                         <button className="view-button" onClick={() => showDB(3)}>
                             Doğalgaz Faturasını Görüntüle
                         </button>
-                        <button className="analyze-button">Karbon Ayak İzini Hesapla</button>
+                        <button className="analyze-button" onClick={() => carbon()}>
+                            Karbon Ayak İzini Hesapla
+                        </button>
                         <button className="analyze-button">Analiz Yap</button>
                     </div>
                 </div>
@@ -194,7 +236,7 @@ function InfoPage() {
                 <h3>Çıktı Ekranı</h3>
                 <div className="output-content">
                     <div className="cart-header">
-                        <h1>Faturalar</h1>
+                        <h2>{typeName}</h2>
                     </div>
                     {allStorageData.map((item, index) => (
                         <div className="cart-item" key={index}>
@@ -223,10 +265,13 @@ function InfoPage() {
                             </div>
                         </div>
                     ))}
-                    Henüz bir veri yok.asfsaf Lütfen bir butona tıklayın.<br />
-                    Henüz bir veri yok.asfsaf Lütfen bir butona tıklayın.<br />
-                    Henüz bir veri yok.asfsaf Lütfen bir butona tıklayın.<br />
-                    Henüz bir veri yok.asfsaf Lütfen bir butona tıklayın.<br />
+                    <hr />
+                    {carbonFootprint !== "" && (
+                        <>
+                            <h3>Karbon Ayak İzi</h3>
+                            <h4>{carbonFootprint} kg CO₂</h4>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
