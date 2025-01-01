@@ -266,7 +266,3 @@ func DeleteBill(conn *pgx.Conn, myBill Bill) int {
 	}
 
 }
-
-func Analiz(conn *pgx.Conn, userId int) string {
-
-}
