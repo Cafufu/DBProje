@@ -61,7 +61,9 @@ func main() {
 			log.Fatal(err)
 		}
 		retVal := utils.InsertBill(dbconn, bill)
-
+		if retVal == 1 {
+			utils.UpdateCarbonFootPrint(dbconn, bill.UserId) // her fatura insert edildiğinde karbon ayakizi update ediliyor
+		}
 		fmt.Println(retVal)
 		return c.JSON(retVal)
 	})
@@ -77,6 +79,19 @@ func main() {
 		Bills := utils.ShowBills(dbconn, billInfo)
 		fmt.Println(Bills)
 		return c.JSON(Bills)
+	})
+	app.Post("/carbon", func(c *fiber.Ctx) error {
+		body := c.Body()
+		var userId int
+		err := json.Unmarshal(body, &userId) // int olarak alıyorum burada ama furkan string gonderirse convert yapcaz.
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(userId)
+
+		carbonFootprint := utils.ShowCarbonFootPrint(dbconn, userId) // string olarak gönderiyorum duruma göre değişebiliriz.
+		fmt.Println(carbonFootprint)
+		return c.JSON(carbonFootprint)
 	})
 
 	app.Listen(":3000")
