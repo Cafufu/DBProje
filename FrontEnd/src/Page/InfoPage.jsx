@@ -15,18 +15,28 @@ function InfoPage() {
         billname: '',
         month: '',
         year: '',
-        amount: '',
+        amount: 0,
     });
     const [show, setShow] = useState({
         userId: cookies.customerData,
     });
+
     const handleInputLogin = (e) => {
         const { name, value } = e.target;
-        setbillInfo(prevState => ({
-            ...prevState,
-            [name]: value,
-        }));
-    }
+
+        if (name === 'amount') {
+            const intValue = value === '' ? '' : parseInt(value, 10);
+            setbillInfo(prevState => ({
+                ...prevState,
+                [name]: intValue,
+            }));
+        } else {
+            setbillInfo(prevState => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
+    };
     const deleteItem = (indexToDelete) => {
         const updatedData = allStorageData.filter((item, index) => index !== indexToDelete);
         setAllStorageData(updatedData);
@@ -53,6 +63,7 @@ function InfoPage() {
     }
 
     const insertDB = () => {
+        console.log(billInfo)
         fetch('http://localhost:3000/insert', {
             method: 'POST',
             headers: {
@@ -169,8 +180,8 @@ function InfoPage() {
                                 onChange={handleInputLogin}
                             >
                                 <option value="1">Elektrik</option>
-                                <option value="2">Doğalgaz</option>
-                                <option value="3">Su</option>
+                                <option value="2">Su</option>
+                                <option value="3">Doğalgaz</option>
                             </select>
                         </div>
 
