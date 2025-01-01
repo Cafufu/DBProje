@@ -254,7 +254,6 @@ func DeleteBill(conn *pgx.Conn, myBill Bill) int {
 
 	// Sorguyu çalıştır
 	result, err := conn.Exec(context.Background(), query, myBill.UserId, myBill.TypeName, myBill.BillName, myBill.Year, myBill.Month)
-
 	if err != nil {
 		log.Fatal(err)
 		return 0
@@ -265,4 +264,43 @@ func DeleteBill(conn *pgx.Conn, myBill Bill) int {
 		return 0
 	}
 
+}
+func Analiz(conn *pgx.Conn, userId int) string {
+	rows, err := conn.Query(context.Background(), "SELECT type_id FROM analiz WHERE user_id=$1 ", userId)
+	var retString string = ""
+	var typeId int
+	var water int = 0
+	var gas int = 0
+	var electric int = 0
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+
+		err := rows.Scan(&typeId)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if typeId == 1 {
+			retString += "Elektrik harcamanız ortalama harcamanızın üstünde!<br/>"
+			electric = 1
+		} else if typeId == 2 {
+			retString += "Su harcamanız ortalama harcamanızın üstünde!<br/>"
+			water = 1
+		} else if typeId == 3 {
+			retString += "Doğalgaz harcamanız ortalama harcamanızın üstünde!<br/>"
+			gas = 1
+		}
+		if electric == 0 {
+			retString += "Elektrik harcamanız ortalama harcamanızın altında!<br/>"
+		} else if water == 0 {
+			retString += "Su harcamanız ortalama harcamanızın altında!<br/>"
+		} else if gas == 0 {
+			retString += "Doğalgaz harcamanız ortalama harcamanızın altında!<br/>"
+		}
+
+	}
+
+	return retString
 }
