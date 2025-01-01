@@ -136,12 +136,11 @@ function InfoPage() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(carbonFootprint);
-
-                if (data !== "-1") {
-
+                console.log(data);
+                if (data === 1) {
+                    deleteItem(index)
                 } else {
-
+                    console.log("Silinemedi")
                 }
             })
             .catch(error => {
