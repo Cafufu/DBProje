@@ -77,6 +77,9 @@ func main() {
 		}
 		fmt.Println(billInfo)
 		Bills := utils.ShowBills(dbconn, billInfo)
+		if len(Bills) == 0 {
+			return c.JSON(-1)
+		}
 		fmt.Println(Bills)
 		return c.JSON(Bills)
 	})
