@@ -106,14 +106,16 @@ func main() {
 	app.Post("/remove", func(c *fiber.Ctx) error {
 		body := c.Body()
 		var bill utils.Bill
-		err := json.Unmarshal(body, &bill) // int olarak alıyorum burada ama furkan string gonderirse convert yapcaz.
+		err := json.Unmarshal(body, &bill)
 		if err != nil {
 			log.Fatal(err)
 		}
 		fmt.Println(bill)
-		//buraya
-		retVal := utils.DeleteBill(dbconn, bill)
 
+		retVal := utils.DeleteBill(dbconn, bill)
+		if retVal == 1 {
+			utils.UpdateCarbonFootPrint(dbconn, bill.UserId) // her fatura insert edildiğinde karbon ayakizi update ediliyor
+		}
 		fmt.Println(retVal)
 		return c.JSON(retVal)
 	})
