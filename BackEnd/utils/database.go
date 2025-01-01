@@ -283,10 +283,10 @@ func Analiz(conn *pgx.Conn, userId int) string {
 			log.Fatal(err)
 		}
 		if typeId == 1 {
-			retString += "Elektrik harcamanız ortalama harcamanızın üstünde!<br/>"
+			retString += "Elektrik harcamanız ortalama harcamanızın üstünde!\n"
 			electric = 1
 		} else if typeId == 2 {
-			retString += "Su harcamanız ortalama harcamanızın üstünde!<br/>"
+			retString += "Su harcamanız ortalama harcamanızın üstünde!\n"
 			water = 1
 		} else if typeId == 3 {
 			retString += "Doğalgaz harcamanız ortalama harcamanızın üstünde!<br/>"
@@ -294,9 +294,11 @@ func Analiz(conn *pgx.Conn, userId int) string {
 		}
 		if electric == 0 {
 			retString += "Elektrik harcamanız ortalama harcamanızın altında!<br/>"
-		} else if water == 0 {
+		}
+		if water == 0 {
 			retString += "Su harcamanız ortalama harcamanızın altında!<br/>"
-		} else if gas == 0 {
+		}
+		if gas == 0 {
 			retString += "Doğalgaz harcamanız ortalama harcamanızın altında!<br/>"
 		}
 
