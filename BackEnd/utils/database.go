@@ -19,7 +19,7 @@ func DbConnect() *pgx.Conn {
 	connStr := os.Getenv("DATABASE_URL")
 	conn, err := pgx.Connect(context.Background(), connStr)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	return conn
 }
@@ -36,15 +36,6 @@ func CheckUser(conn *pgx.Conn, userName string) int {
 	} else {
 		return 0
 	}
-
-	// for rows.Next() {
-	// 	var id int32
-	// 	var name string
-	// 	if err := rows.Scan(&id, &name); err != nil {
-	// 		panic(err)
-	// 	}
-	// 	fmt.Printf("%d | %s\n", id, name)
-	// }
 
 }
 
