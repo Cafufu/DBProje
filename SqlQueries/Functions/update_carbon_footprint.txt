@@ -1,0 +1,38 @@
+CREATE OR REPLACE FUNCTION update_carbon_footprint()
+RETURNS TRIGGER AS $$
+DECLARE
+    total NUMERIC := 0;  
+BEGIN
+    
+    SELECT COALESCE(SUM(carbon), 0) INTO total
+    FROM (
+        SELECT rec.amount * 0.35/4 AS carbon  -- Elektrik
+        FROM bills rec
+        WHERE rec.user_id = NEW.user_id AND rec.type_id = 1
+        UNION ALL
+        SELECT rec.amount * 0.4/25 AS carbon  -- Su
+        FROM bills rec
+        WHERE rec.user_id = NEW.user_id AND rec.type_id = 2
+        UNION ALL
+        SELECT rec.amount * 1.92/15 AS carbon  -- Doğalgaz
+        FROM bills rec
+        WHERE rec.user_id = NEW.user_id AND rec.type_id = 3
+    ) AS carbon_values;
+
+    
+    total := ROUND(total, 3);  -- Yuvarlama işlemi burada `NUMERIC` türü üzerinde yapılır
+
+   
+    UPDATE carbon_footprint
+    SET value = total
+    WHERE user_id = NEW.user_id;
+
+    
+    INSERT INTO carbon_footprint (user_id, value)
+    SELECT NEW.user_id, total
+    ON CONFLICT (user_id) DO UPDATE
+    SET value = EXCLUDED.value;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;

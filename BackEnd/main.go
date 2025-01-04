@@ -70,7 +70,7 @@ func main() {
 		}
 
 		if retVal == 1 {
-			utils.UpdateCarbonFootPrint(dbconn, bill.UserId) // her fatura insert edildiğinde karbon ayakizi update ediliyor
+			//utils.UpdateCarbonFootPrint(dbconn, bill.UserId) // her fatura insert edildiğinde karbon ayakizi update ediliyor
 		}
 		return c.JSON(retVal)
 	})
