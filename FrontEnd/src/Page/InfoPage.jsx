@@ -76,7 +76,11 @@ function InfoPage() {
             .then(response => response.json())
             .then(data => {
                 if (data === 1) {
-                    setResponseMessage('Kayıt başarılı');
+                    setCarbonFootprint("")
+                    setAnalyze("")
+                    setAllStorageData([])
+                    setTypeName("")
+                    setResponseMessage('Faturanız Kaydedildi <br /> Karbon Ayakiziniz Güncellendi. <br /> Ortalama Fatura Tutarınız Güncellendi');
                 }
             })
             .catch(error => {
@@ -99,6 +103,7 @@ function InfoPage() {
             .then(data => {
                 setCarbonFootprint("")
                 setAnalyze("")
+                setResponseMessage("")
                 if (data !== -1) {
                     setAllStorageData(data);
                 } else {
@@ -125,6 +130,7 @@ function InfoPage() {
                 setAllStorageData([])
                 setTypeName("")
                 setAnalyze("")
+                setResponseMessage("")
                 if (data !== "-1") {
                     setCarbonFootprint(data);
                 } else {
@@ -150,6 +156,7 @@ function InfoPage() {
                 setAllStorageData([])
                 setTypeName("")
                 setCarbonFootprint("")
+                setResponseMessage("")
                 if (data !== "-1") {
                     setAnalyze(data);
                 } else {
@@ -189,7 +196,7 @@ function InfoPage() {
                 <div className="left-panel">
                     <h2>Yeni Fatura Ekle</h2>
                     <div style={{ textAlign: "center" }}>
-                        {responseMessage}
+
                     </div>
                     <form className="bill-form">
                         <div className="form-group">
@@ -333,6 +340,13 @@ function InfoPage() {
                             <h2 style={{ color: 'red' }}>Analiz</h2>
                             <p
                                 dangerouslySetInnerHTML={{ __html: Analyze }}
+                            ></p>
+                        </>
+                    )}
+                    {responseMessage !== "" && (
+                        <>
+                            <p
+                                dangerouslySetInnerHTML={{ __html: responseMessage }}
                             ></p>
                         </>
                     )}

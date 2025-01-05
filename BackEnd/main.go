@@ -62,16 +62,10 @@ func main() {
 
 		if exist {
 			retVal = utils.UpdateBill(dbconn, bill)
-
 		} else {
-
 			retVal = utils.InsertBill(dbconn, bill)
-
 		}
 
-		if retVal == 1 {
-			//utils.UpdateCarbonFootPrint(dbconn, bill.UserId) // her fatura insert edildiğinde karbon ayakizi update ediliyor
-		}
 		return c.JSON(retVal)
 	})
 
