@@ -1,33 +1,55 @@
 CREATE OR REPLACE FUNCTION update_carbon_footprint()
 RETURNS TRIGGER AS $$
 DECLARE
-    total NUMERIC := 0;  
+    total NUMERIC := 0;  -- Toplam karbon ayak izi
+    carbon_cursor CURSOR FOR
+        WITH combined_fees AS (
+            -- Elektrik faturaları
+            SELECT rec.amount, rec.type_id
+            FROM bills rec
+            WHERE rec.user_id = NEW.user_id AND rec.type_id = 1
+            UNION
+            -- Su faturaları
+            SELECT rec.amount, rec.type_id
+            FROM bills rec
+            WHERE rec.user_id = NEW.user_id AND rec.type_id = 2
+            UNION
+            -- Doğalgaz faturaları
+            SELECT rec.amount, rec.type_id
+            FROM bills rec
+            WHERE rec.user_id = NEW.user_id AND rec.type_id = 3
+        )
+        SELECT amount, type_id FROM combined_fees;  -- CTE'den verileri seçiyoruz
+    rec RECORD;  -- Record türünde değişken, cursor ile her satır için kullanılacak
 BEGIN
-    
-    SELECT COALESCE(SUM(carbon), 0) INTO total
-    FROM (
-        SELECT rec.amount * 0.35/4 AS carbon  -- Elektrik
-        FROM bills rec
-        WHERE rec.user_id = NEW.user_id AND rec.type_id = 1
-        UNION ALL
-        SELECT rec.amount * 0.4/25 AS carbon  -- Su
-        FROM bills rec
-        WHERE rec.user_id = NEW.user_id AND rec.type_id = 2
-        UNION ALL
-        SELECT rec.amount * 1.92/15 AS carbon  -- Doğalgaz
-        FROM bills rec
-        WHERE rec.user_id = NEW.user_id AND rec.type_id = 3
-    ) AS carbon_values;
+    -- Cursor'u aç ve satırları işle
+    OPEN carbon_cursor;
+    LOOP
+        FETCH carbon_cursor INTO rec;
+        EXIT WHEN NOT FOUND;
 
+        -- Fatura türüne göre karbon hesaplama
+        IF rec.type_id = 1 THEN
+            total := total + (rec.amount * 0.35 / 4);  -- Elektrik
+        ELSIF rec.type_id = 2 THEN
+            total := total + (rec.amount * 0.4 / 25);  -- Su
+        ELSIF rec.type_id = 3 THEN
+            total := total + (rec.amount * 1.92 / 15);  -- Doğalgaz
+        END IF;
+    END LOOP;
     
-    total := ROUND(total, 3);  -- Yuvarlama işlemi burada `NUMERIC` türü üzerinde yapılır
+    -- Cursor'u kapat
+    CLOSE carbon_cursor;
 
-   
+    -- Sonuç değeri 3 basamağa yuvarla
+    total := ROUND(total, 3);
+
+    -- carbon_footprint tablosunu güncelle
     UPDATE carbon_footprint
     SET value = total
     WHERE user_id = NEW.user_id;
 
-    
+    -- Eğer kayıt yoksa, ekle
     INSERT INTO carbon_footprint (user_id, value)
     SELECT NEW.user_id, total
     ON CONFLICT (user_id) DO UPDATE
