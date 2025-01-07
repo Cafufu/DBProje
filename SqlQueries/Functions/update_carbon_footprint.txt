@@ -20,7 +20,7 @@ DECLARE
             WHERE rec.user_id = NEW.user_id AND rec.type_id = 3
         )
         SELECT amount, type_id FROM combined_fees;  -- CTE'den verileri seçiyoruz
-    rec RECORD;  -- Record türünde değişken, cursor ile her satır için kullanılacak
+    rec fee_record;  -- fee_record türünde değişken, cursor ile her satır için kullanılacak
 BEGIN
     -- Cursor'u aç ve satırları işle
     OPEN carbon_cursor;

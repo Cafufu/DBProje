@@ -1,0 +1,4 @@
+CREATE TYPE fee_record AS (
+    amount NUMERIC,
+    type_id INT
+);
