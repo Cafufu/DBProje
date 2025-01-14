@@ -47,7 +47,7 @@ CREATE TYPE fee_record AS (
     type_id INT
 );
 
-//this function is created to check if any tuple exist with the given user_id in the carbon_footprint table
+--this function is created to check if any tuple exist with the given user_id in the carbon_footprint table
 CREATE OR REPLACE FUNCTION carbon_exist(myid users.id%type)
 RETURNS BOOLEAN AS $$
  DECLARE
