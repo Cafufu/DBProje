@@ -37,6 +37,10 @@ ALTER TABLE "public"."bills" ALTER COLUMN "month" TYPE varchar(144)
 ALTER TABLE bills
 ADD CONSTRAINT check_amount_max
 CHECK (amount <= 10000);
+ALTER TABLE "public"."bills" DROP CONSTRAINT "bills_to_users"
+ALTER TABLE "public"."bills" ADD CONSTRAINT "bills_to_users" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id") ON UPDATE CASCADE ON DELETE CASCADE
+ALTER TABLE "public"."bills" DROP CONSTRAINT "footprint_to_user" 
+ALTER TABLE "public"."bills" ADD CONSTRAINT "footprint_to_user" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id") ON UPDATE CASCADE ON DELETE CASCADE
 
 CREATE TYPE fee_record AS (
     amount NUMERIC,
