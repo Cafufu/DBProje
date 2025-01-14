@@ -7,7 +7,7 @@ CREATE TABLE "public"."bills" (
   "month" integer,
   "amount" real,
   CONSTRAINT "bills_to_users" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id"),
-  CONSTRAINT "bills_to_types" FOREIGN KEY ("type_id") REFERENCES "public"."bill_types" ("id")
+  CONSTRAINT "bills_to_types" FOREIGN KEY ("type_id") REFERENCES "public"."bill_types" ("id") 
 )
 
 ALTER TABLE "public"."bills" ALTER COLUMN "year" TYPE varchar(144)
@@ -15,3 +15,5 @@ ALTER TABLE "public"."bills" ALTER COLUMN "month" TYPE varchar(144)
 ALTER TABLE bills
 ADD CONSTRAINT check_amount_max
 CHECK (amount <= 10000);
+ALTER TABLE "public"."bills" DROP CONSTRAINT "bills_to_users"
+ALTER TABLE "public"."bills" ADD CONSTRAINT "bills_to_users" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id") ON UPDATE CASCADE ON DELETE CASCADE
