@@ -5,4 +5,8 @@ CREATE TABLE "public"."carbon_footprint" (
   CONSTRAINT "footprint_to_user" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id")
 )
 ALTER TABLE "public"."bills" DROP CONSTRAINT "footprint_to_user" 
+<<<<<<< HEAD
 ALTER TABLE "public"."bills" ADD CONSTRAINT "footprint_to_user" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id") ON UPDATE CASCADE ON DELETE CASCADE
+=======
+ALTER TABLE "public"."bills" ADD CONSTRAINT "footprint_to_user" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id") ON UPDATE CASCADE ON DELETE CASCADE
+>>>>>>> 4ebce2552077d0fcb169870832abd5131a374ae2

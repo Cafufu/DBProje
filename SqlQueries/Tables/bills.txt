@@ -16,4 +16,8 @@ ALTER TABLE bills
 ADD CONSTRAINT check_amount_max
 CHECK (amount <= 10000);
 ALTER TABLE "public"."bills" DROP CONSTRAINT "bills_to_users"
+<<<<<<< HEAD
 ALTER TABLE "public"."bills" ADD CONSTRAINT "bills_to_users" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id") ON UPDATE CASCADE ON DELETE CASCADE
+=======
+ALTER TABLE "public"."bills" ADD CONSTRAINT "bills_to_users" FOREIGN KEY ("user_id") REFERENCES "public"."users" ("id") ON UPDATE CASCADE ON DELETE CASCADE
+>>>>>>> 4ebce2552077d0fcb169870832abd5131a374ae2
